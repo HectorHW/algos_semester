@@ -3,11 +3,12 @@
 //
 
 #include "arrays.h"
+#include <climits>
 
 void fill_array(int *arr, int size) {
 
     for (int i=0;i<size;i++){
-        arr[i] = rand();
+        arr[i] = rand()%0xffff;
     }
 
 }
@@ -22,8 +23,9 @@ void fill_half_sorted(int *arr, int size) {
     int sorted_size = size/2;
 
     int delta = INT_MAX/2 / sorted_size;
-    int i=0;
+
     arr[0] = rand()%delta;
+    int i=1;
     for (;i<sorted_size;i++){
         arr[i] = arr[i-1] + rand()%delta;
     }

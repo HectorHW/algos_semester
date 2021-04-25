@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <algorithm>
 #include <vector>
+#include <cstring>
 
 template<class T> void bubble_sort(T* arr, T* buf, int size);
 
@@ -252,15 +253,27 @@ template<class T> void shell_fib_sort(T *arr, int size) {
 
 struct Stack{
 public:
+    static int next_idx;
     int* begin;
     int* next;
+    int capacity;
+
+    int idx;
     Stack(){
         next = begin = nullptr;
+        capacity = 0;
+        idx = next_idx++;
     }
 
     void make_room(int size){
-        this->begin = new int[size];
-        this->next = this->begin;
+        if(capacity<size){
+            long offset = next - begin;
+
+            begin = (int*)(realloc(begin, size * (sizeof(int))));
+            //std::cout<<"allocated "<<idx<<" with size "<<size<<std::endl;
+            next = begin + offset;
+            capacity = size;
+        }
     }
 
     void push(int value){
@@ -273,13 +286,22 @@ public:
     }
 
     ~Stack(){
-        delete begin;
+        //std::cout<<"freed "<<idx<<std::endl;
+        free(begin);
     }
 
 };
+int Stack::next_idx = 0;
+
+void print_arr(int* arr, int size){
+    for(int i=0;i<size;i++){
+        std::cout<<arr[i]<<" ";
+    }
+    std::cout<<std::endl;
+}
 
 static void f_count_sort(int* arr, int size){
-    int bins[16];
+    int bins[16]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     int base = arr[0] - arr[0]%16;
     for (int i=0;i<size;i++){
         bins[arr[i]%16]++;
@@ -295,7 +317,7 @@ static void f_count_sort(int* arr, int size){
 }
 
 static void _fsort(int* arr, int size, int index, Stack stacks[16]){
-    if(size==1) return;
+    if(size<=1) return;
     if(size==2){
         if(arr[0]>arr[1]) std::swap(arr[0], arr[1]); return;
     }
@@ -334,8 +356,10 @@ static void _fsort(int* arr, int size, int index, Stack stacks[16]){
 
 }
 
-void fsort(int* arr, int size){
-    Stack stacks[16];
+Stack stacks[16];
+
+void fsort(int* arr, int* buf, int size){
+
     for(int i=0;i<16;i++){
         stacks[i].make_room(size);
     }
