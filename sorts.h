@@ -218,8 +218,37 @@ void insertion_sort(T *arr, T *buf, int size) {
     }
 }
 
-template<class T> void digit_sort(T *arr, int size) {
+static int max_idx(const int* arr, int size){
+    int res = 0;
+    for(int i=1;i<size;i++){
+        if(arr[i]>arr[res]) res = i;
+    }
+    return res;
+}
 
+static void _sort_digit(int* arr, int* buf, int size, int digit_power){
+    int count[10] = {0};
+    for (int i = 0; i < size; ++i) {
+        count[(arr[i]/digit_power)%10]++;
+    }
+    for(int i=1;i<10;i++){
+        count[i]+=count[i-1]; //индесы из размеров
+    }
+
+    for (int i = size-1; i >=0 ; --i) { //пройдёмся с конца, тогда можно будет трогать индексы справа
+        buf[count[(arr[i]/digit_power)%10]-1] = arr[i];
+        count[(arr[i]/digit_power)%10]--;
+    }
+
+    memcpy(arr, buf, sizeof (int)*size);
+}
+
+
+void digit_sort(int *arr, int* buf, int size) {
+    int max = arr[max_idx(arr, size)];
+    for (int i = 1; i<=max; i*=10) {
+        _sort_digit(arr, buf, size, i);
+    }
 }
 
 std::vector<int> fibs;

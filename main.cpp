@@ -116,6 +116,9 @@ int pick_sorter(int sort_method, array_function &sorter, std::string &name){
         case 7:
             sorter = fsort; name.append("fsort_"); break;
 
+        case 8:
+            sorter = digit_sort; name.append("digitsort_"); break;
+
         default:
             std::cout<<"unknown sorting\n"; return 1;
     }
@@ -143,7 +146,7 @@ int pick_filler(int fill_method, fill_function &filler, std::string &name){
 }
 
 void test_sorters(){
-    for(int sorter_id=0; sorter_id<=7; sorter_id++){
+    for(int sorter_id=0; sorter_id<=8; sorter_id++){
         for (int filler_id=0;filler_id<=3;filler_id++){
             array_function sorter = bubble_sort<int>;
             auto filler = fill_array;
@@ -169,6 +172,6 @@ void test_sorters(){
 
 int main(int argc, char **argv) {
     test_sorters();
-
+    //test_20<int>(fill_10, digit_sort);
     return 0;
 }
