@@ -31,9 +31,7 @@ template<class T> void bubble_sort(T *arr, T* buf, int size) {
     for (int i = 0; i < size; ++i) {
         for (int j=0;j<size-i-1;++j){
             if(arr[j]>arr[j+1]) {
-                int temp = arr[j];
-                arr[j] = arr[j+1];
-                arr[j+1] = temp;
+                std::swap(arr[j], arr[j+1]);
             }
         }
     }
@@ -71,7 +69,8 @@ template<class T> int chose_pivot(T *arr, int size){
 template<class T> void _my_qsort(T *arr, T* buf, int size, int depth) {
     //std::cout<<size<<" ";
     int i,j;
-    T pivot, temp;
+    T temp;
+    int pivot;
     if(size<2) return;
     if(size==2){
         if(arr[0]>arr[1]) std::swap(arr[0], arr[1]);
@@ -79,7 +78,7 @@ template<class T> void _my_qsort(T *arr, T* buf, int size, int depth) {
     }
 
     if(size<16 || depth>40){
-        insertion_sort<int>(arr, buf, size); return;
+        insertion_sort<T>(arr, buf, size); return;
     }
 
     //pivot = chose_pivot(arr, size);
@@ -322,9 +321,9 @@ public:
 };
 int Stack::next_idx = 0;
 
-void print_arr(int* arr, int size){
+template<class T> void print_arr(T* arr, int size){
     for(int i=0;i<size;i++){
-        std::cout<<arr[i]<<" ";
+        std::cout<<arr[i]<<std::endl;
     }
     std::cout<<std::endl;
 }
