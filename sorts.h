@@ -40,11 +40,24 @@ template<class T> void bubble_sort(T *arr, T* buf, int size) {
 
 }
 
-template<class T> void shell_sort(T *arr, T* buf, int size) {
-    for(int d = size/2; d>=1; d/=2) {
-        for(int i=0;i<size;i++){
-            for(int j =i+d;j<size;j+=d ){
-                if(arr[i]>arr[j]) std::swap(arr[i], arr[j]);
+template<class T> void shell_sort(T* a, T* _buf, int n)
+{
+    int i, j, k;
+    // Gap 'i' between index of the element to be compared, initially n/2.
+    for(i = n/2; i > 0; i = i/2)
+    {
+        for(j = i; j < n; j++)
+        {
+            for(k = j-i; k >= 0; k = k-i)
+            {
+                // If value at higher index is greater, then break the loop.
+                if(a[k+i] >= a[k])
+                    break;
+                    // Switch the values otherwise.
+                else
+                {
+                    std::swap(a[k], a[k+i]);
+                }
             }
         }
     }

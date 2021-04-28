@@ -94,30 +94,30 @@ template<class T> void test_powers(void (*filler)(T*,int),
     }
 }
 
-int pick_sorter(int sort_method, array_function &sorter, std::string &name){
+template<class T> int pick_sorter(int sort_method, void(**sorter)(T*,T*,int), std::string &name){
     switch (sort_method) {
         case 0:
-            sorter = bubble_sort<int>; name.append("bubble_"); break;
+            *sorter = bubble_sort<T>; name.append("bubble_"); break;
         case 1:
-            sorter = insertion_sort<int>; name.append("insertion_"); break;
+            *sorter = insertion_sort<T>; name.append("insertion_"); break;
         case 2:
-            sorter = shell_sort<int>; name.append("shell_"); break;
+            *sorter = shell_sort<T>; name.append("shell_"); break;
         case 3:
-            sorter = my_qsort<int>; name.append("myqsort_"); break;
+            *sorter = my_qsort<T>; name.append("myqsort_"); break;
 
         case 4:
-            sorter = merge_sort<int>; name.append("merge_"); break;
+            *sorter = merge_sort<T>; name.append("merge_"); break;
         case 5:
-            sorter = heap_sort<int>; name.append("heap_"); break;
+            *sorter = heap_sort<T>; name.append("heap_"); break;
 
         case 6:
-            sorter = builtin_qsort<int>; name.append("builtin_"); break;
+            *sorter = builtin_qsort<T>; name.append("builtin_"); break;
 
         case 7:
-            sorter = fsort; name.append("fsort_"); break;
+            *sorter = fsort; name.append("fsort_"); break;
 
         case 8:
-            sorter = digit_sort; name.append("digitsort_"); break;
+            *sorter = digit_sort; name.append("digitsort_"); break;
 
         default:
             std::cout<<"unknown sorting\n"; return 1;
@@ -146,13 +146,13 @@ int pick_filler(int fill_method, fill_function &filler, std::string &name){
 }
 
 void test_sorters(){
-    for(int sorter_id=0; sorter_id<=8; sorter_id++){
+    for(int sorter_id=2; sorter_id<=2; sorter_id++){
         for (int filler_id=0;filler_id<=3;filler_id++){
             array_function sorter = bubble_sort<int>;
             auto filler = fill_array;
             std::string name;
 
-            pick_sorter(sorter_id, sorter, name);
+            pick_sorter(sorter_id, &sorter, name);
 
             pick_filler(filler_id, filler, name);
 
