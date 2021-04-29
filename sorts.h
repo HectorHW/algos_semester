@@ -156,6 +156,21 @@ template<class T> void merge_sort(T *arr, T* buf, int size) {
 
 }
 
+template<size_t N> void count_sort(int* arr, int* _buf, int size){
+    int count[N]{0};
+    for (int i=0;i<size;i++) {
+        count[arr[i]%N]++;
+    }
+    int i = 0;
+    for (int j = 0; j < N; ++j) {
+        while (count[j]>0){
+            arr[i] = j;
+            i++;
+            count[j]--;
+        }
+    }
+}
+
 template<class T> static void heapify(T arr[], int n, int i) {
     int max = i; //Initialize max as root
     int leftChild = 2 * i + 1;
@@ -367,10 +382,6 @@ static void _fsort(int* arr, int size, int index, Stack stacks[16]){
         insertion_sort<int>(arr, nullptr, size);
     }
 
-    if(index==0){
-        f_count_sort(arr, size);
-        return;
-    }
     for (int i=0;i<16;i++){
         stacks[i].reset();
     }
