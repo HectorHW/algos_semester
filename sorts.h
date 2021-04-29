@@ -382,6 +382,10 @@ static void _fsort(int* arr, int size, int index, Stack stacks[16]){
         insertion_sort<int>(arr, nullptr, size);
     }
 
+    if(index==0){
+        f_count_sort(arr, size);
+        return;
+    }
     for (int i=0;i<16;i++){
         stacks[i].reset();
     }
